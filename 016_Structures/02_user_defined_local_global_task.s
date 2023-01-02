@@ -1,40 +1,60 @@
 .section .rodata
-	msg_main_obj1_print:
-	.string "Enter obj1 values:\n"
+	msg_main_print1:
+	.string "Enter values for Obj 1:\n"
 
-	msg_main_print_char:
-	.string "Enter chChar\t: "
+	msg_main_print2:
+	.string "Enter values for Obj 2:\n"
 
-	msg_main_obj1_scan_char:
-	.string	"%c"
+	msg_main_print_chChar:
+	.string "Enter chChar: "
 
-	msg_main_print_int:
-	.string "Enter iNo\t: "
+	msg_main_print_iNo:
+	.string "Enter iNo: "
 
-	msg_main_obj1_scan_int:
-	.string	"%d"
+	msg_main_print_shiNo:
+	.string "Enter shiNo: "
 
-	msg_main_print_shint:
-	.string "Enter shiNo\t: "
+	msg_main_scan_obj1_chChar:
+	.string "%c"
+	
+	msg_main_scan_obj1_iNo:
+	.string "%d"
+	
+	msg_main_scan_obj1_shiNo:
+	.string "%hd"
 
-	msg_main_obj1_scan_shint:
-	.string	"%hd"
+	msg_main_scan_obj2_chChar:
+	.string "%c%c"
+	
+	msg_main_scan_obj2_iNo:
+	.string "%c%d"
+	
+	msg_main_scan_obj2_shiNo:
+	.string "%c%hd"
 
-	msg_main_obj2_print:
-	.string "Enter obj2 values:\n"
+	msg_main_obj1_print_values:
+	.string	"Obj1 values: \n"
 
-	msg_main_obj2_scan_char:
-	.string	"%c%c"
+	msg_main_obj2_print_values:
+	.string	"Obj2 values: \n"
 
-	msg_main_obj2_scan_int:
-	.string	"%c%d"
+	msg_main_obj1_print_chChar:
+	.string	"Obj1 chChar = %c \n"
 
-	msg_main_obj2_scan_shint:
-	.string	"%c%hd"
+	msg_main_obj1_print_iNo:
+	.string	"Obj1 iNo = %d \n"
 
-	msg_main_print_obj1:
-	.string "chChar = %c, iNo=%d, shiNo=%hd\n\n"
+	msg_main_obj1_print_shiNo:
+	.string	"Obj1 shiNo = %hd \n"
 
+	msg_main_obj2_print_chChar:
+	.string	"Obj2 chChar = %c \n"
+
+	msg_main_obj2_print_iNo:
+	.string	"Obj2 iNo = %d \n"
+
+	msg_main_obj2_print_shiNo:
+	.string	"Obj2 shiNo = %hd \n"
 
 .section .bss
 	.comm	obj1, 12, 4
@@ -48,120 +68,135 @@ main:
 
 	subl	$13, %esp
 
-	pushl	$msg_main_obj1_print
+	pushl	$msg_main_print1
 	call	printf
 	addl	$4, %esp
 
-	pushl	$msg_main_print_char
-	call	printf
-	addl	$4, %esp
-
-	#Follwoing code is to read values and store in OBJ1
-
-	movl	$obj1, %ebx #take the address of obj1 into ebx
-	pushl	%ebx
-	pushl 	$msg_main_obj1_scan_char
-	call	scanf
-	addl	$8, %esp
-
-	pushl	$msg_main_print_int
+	pushl	$msg_main_print_chChar
 	call	printf
 	addl	$4, %esp
 
 	movl	$obj1, %ebx
-	leal	4(%ebx),%ebx
 	pushl	%ebx
-	pushl	$msg_main_obj1_scan_int
+	pushl	$msg_main_scan_obj1_chChar
 	call	scanf
 	addl	$8, %esp
 
-	pushl	$msg_main_print_shint
+	pushl	$msg_main_print_iNo
 	call	printf
 	addl	$4, %esp
 
-	movl	$obj1, %ebx	
-	leal	8(%ebx),%ebx	#we want to send address to scanf so take address
+	movl	$obj1, %ebx
+	leal	4(%ebx), %ebx
 	pushl	%ebx
-	pushl	$msg_main_obj1_scan_shint
+	pushl	$msg_main_scan_obj1_iNo
 	call	scanf
 	addl	$8, %esp
 
-	#Follwoing code is to read and store values in OBJ2 which is local
-	
-	pushl	$msg_main_obj2_print
+	pushl	$msg_main_print_shiNo
 	call	printf
 	addl	$4, %esp
 
-	pushl	$msg_main_print_char
+	movl	$obj1, %ebx
+	leal	8(%ebx), %ebx
+	pushl	%ebx
+	pushl	$msg_main_scan_obj1_shiNo
+	call	scanf
+	addl	$8, %esp
+	
+	pushl	$msg_main_print2
 	call	printf
 	addl	$4, %esp
- 
-	leal	-12(%ebp),%eax  #char
-	leal	-13(%ebp),%edx	#temp
+
+	pushl	$msg_main_print_chChar
+	call	printf
+	addl	$4, %esp
+
+	leal	-13(%ebp), %eax
+	leal	-12(%ebp), %edx
 	pushl	%edx
 	pushl	%eax
-	pushl	$msg_main_obj2_scan_char
+	pushl	$msg_main_scan_obj2_chChar
 	call	scanf
 	addl	$12, %esp
 
-	pushl	$msg_main_print_int
+	pushl	$msg_main_print_iNo
 	call	printf
 	addl	$4, %esp
- 
-	leal	-8(%ebp),%eax  #int
-	leal	-13(%ebp),%edx	#temp
-	pushl	%edx 
-	pushl	%eax
-	pushl	$msg_main_obj2_scan_int 
-	call	scanf
-	addl	$12, %esp
 
-	pushl	$msg_main_print_shint
-	call	printf
-	addl	$4, %esp
-	
-	leal	-4(%ebp),%eax #shint
-	leal	-13(%ebp),%edx	
+	leal	-13(%ebp), %eax
+	leal	-8(%ebp), %edx
 	pushl	%edx
 	pushl	%eax
-	pushl	$msg_main_obj2_scan_shint
+	pushl	$msg_main_scan_obj2_iNo
 	call	scanf
 	addl	$12, %esp
-		
 
-	#Following code is to print the values of OBJ1
-	
+	pushl	$msg_main_print_shiNo
+	call	printf
+	addl	$4, %esp
+
+	leal	-13(%ebp), %eax
+	leal	-4(%ebp), %edx
+	pushl	%edx
+	pushl	%eax
+	pushl	$msg_main_scan_obj2_shiNo
+	call	scanf
+	addl	$12, %esp
+
+	pushl	$msg_main_obj1_print_values
+	call	printf
+	addl	$4, %esp
+
 	xorl	%eax, %eax
-	xorl	%ecx, %ecx
-		
 	movl	$obj1, %ebx
-	movb	(%ebx),%al
-	movl	4(%ebx),%edx
-	movw	8(%ebx),%cx
+	movb	(%ebx), %al	
+	pushl	%eax
+	pushl	$msg_main_obj1_print_chChar
+	call	printf
+	addl	$8, %esp
 	
+	movl	$obj1, %ebx
+	movl	4(%ebx), %edx	
+	pushl	%edx
+	pushl	$msg_main_obj1_print_iNo
+	call	printf
+	addl	$8, %esp
+
+	xorl	%ecx, %ecx
+	movl	$obj1, %ebx
+	movw	8(%ebx), %cx	
 	pushl	%ecx
-	pushl	%edx
-	pushl	%eax
-	pushl	$msg_main_print_obj1
+	pushl	$msg_main_obj1_print_shiNo
 	call	printf
-	addl	$16,%esp
+	addl	$8, %esp
 
-	#Following code is to print the values of OBJ2
-	
+	pushl	$msg_main_obj2_print_values
+	call	printf
+	addl	$4, %esp
+
 	xorl	%eax, %eax
-	xorl	%ecx, %ecx
-		
 	leal	-12(%ebp), %ebx
-	movb	(%ebx),%al
-	movl	-8(%ebx),%edx
-	movw	-4(%ebx),%cx
-	
-	pushl	%ecx
-	pushl	%edx
+	movb	(%ebx), %al	
 	pushl	%eax
-	pushl	$msg_main_print_obj1
+	pushl	$msg_main_obj1_print_chChar
 	call	printf
-	addl	$16,%esp
+	addl	$8, %esp
+	
+	leal	-12(%ebp), %ebx
+	movl	4(%ebx), %edx	
+	pushl	%edx
+	pushl	$msg_main_obj1_print_iNo
+	call	printf
+	addl	$8, %esp
+
+	xorl	%ecx, %ecx
+	leal	-12(%ebp), %ebx
+	movw	8(%ebx), %cx	
+	pushl	%ecx
+	pushl	$msg_main_obj1_print_shiNo
+	call	printf
+	addl	$8, %esp
 
 	pushl	$0
 	call	exit
